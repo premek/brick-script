@@ -1,4 +1,7 @@
 local lpeg = require "lpeg"
+local inspect = require 'inspect'
+
+
 lpeg.locale(lpeg)
 local S,C,Ct,Cc,Cg,Cb,Cf,Cmt,P,V =
   lpeg.S, lpeg.C, lpeg.Ct, lpeg.Cc, lpeg.Cg, lpeg.Cb, lpeg.Cf, lpeg.Cmt,
@@ -20,15 +23,21 @@ local params = Ct(Cc"params" * iid * (P"," * wh * iid)^0) *wh
 
 local g = P({
  "prog",
-
- block = Ct(P"{"/"block" * ((V'stmt'+V'block')^0) * "}"),
- assign = Ct(Cc"assign" * id * params^0 * ":" * wh * V'stmt'),
-
+ prog = Ct(V'stmt'^1),
  stmt = (V'block' + V'assign' + id + num)*wh,
 
- prog = Ct(V'stmt'^1)
+ block = Ct(P"{"/"block" * wh * ((V'stmt'+V'block')^0) * "}"),
+ assign = Ct(Cc"assign" * id * params^0 * ":" * wh * V'stmt'),
+
+
 })
 
 
 
-require "pl.pretty".dump(g:match("fun a, b,c : {A:2 34}"));
+print(inspect(g:match([[
+fun a, b,c : {
+  A:2
+  4
+}
+
+]])));

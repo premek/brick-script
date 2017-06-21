@@ -15,29 +15,31 @@ local nl = S"\r\n" ^1 + eof
 
 local symbols = S":{}, \t\r\n"
 local iid = C((P(1)-symbols)^1)
-local id = Ct(Cc"id" * iid) *wh
-local num = Ct(Cc"num" * C(lpeg.digit^1)) *wh
-local params = Ct(Cc"params" * iid * (P"," * wh * iid)^0) *wh
+local id = Ct(Cc"id" * iid) *sp
+local num = Ct(Cc"num" * C(lpeg.digit^1)) *sp
+local params = Ct(Cc"params" * iid * (P"," * wh * iid)^0) *sp
+
+local commentLine = P"//"*((P(1)-nl)^1)*nl
+local commentBlock = P"/*" * ((P(1)-"*/")^1)*"*/"*wh
+local comment = commentLine + commentBlock
+
 
 
 
 local g = P({
  "prog",
  prog = Ct(V'stmt'^1),
- stmt = (V'block' + V'assign' + id + num)*wh,
+ stmt = (comment + V'block' + V'assign' + num + id)*wh,
 
- block = Ct(P"{"/"block" * wh * ((V'stmt'+V'block')^0) * "}"),
+ block = Ct(P"{"/"block" * wh * ((V'stmt')^0) * "}"),
  assign = Ct(Cc"assign" * id * params^0 * ":" * wh * V'stmt'),
 
 
 })
 
-
-
 print(inspect(g:match([[
-fun a, b,c : {
-  A:2
-  4
-}
+hello: 4
+samesame x: {hi!}
+hi: 2
 
 ]])));

@@ -13,12 +13,13 @@ local sp = S" \t" ^0 + eof
 local wh = S" \t\r\n" ^0 + eof
 local nl = S"\r\n" ^1 + eof
 
-local symbols = S":{}, \t\r\n"
+local symbols = S":{}(),. \t\r\n"
 
-local iid = C((P(1)-symbols)^1)
-local id = Ct(Cc"id" * iid) *sp
-local num = Ct(Cc"num" * C(lpeg.digit^1)) *sp
-local params = Ct(Cc"params" * iid * (P"," * wh * iid)^0) *sp
+local id = C((P(1)-symbols)^1)*sp
+local ident = id *(wh*'.'*wh* id)^0 * sp
+local name = Ct(Cc"name" * ident)
+local num = Ct(Cc"num" * C(lpeg.digit^1)) *sp -- do we really need you? :)
+local params = Ct(Cc"params" * id * (P"," * wh * id)^0) *sp
 
 local commentLine = P"//"*((P(1)-nl)^1)*nl
 local commentBlock = P"/*" * ((P(1)-"*/")^1)*"*/"*wh
@@ -29,34 +30,37 @@ local bitmap = Ct(Cc"bitmap" * Ct(Ct(sp * bit^1 * wh)^1))
 
 local g = P({
  "prog",
- prog = Ct(V'stmt'^1),
- stmt = (comment + V'block' + V'assign' + bitmap + num + id)*wh,
+ prog = wh* Ct(V'stmt'^1),
+ stmt = (comment + V'block' + V'call' + V'assign' + V'update' + bitmap + num + name)*wh,
 
  block = Ct(P"{"/"block" * wh * ((V'stmt')^0) * "}"),
- assign = Ct(Cc"assign" * id * params^0 * ":" * wh * V'stmt'),
+ assign = Ct(Cc"assign" * ident * params^0 * ":" * wh * V'stmt'),
+ update = Ct(Cc"update" * ident * wh*"<<" * wh * V'stmt'),
+
+ call = Ct(Cc"call" * name * wh *"(" * wh * V'stmt'^-1 * ("," * wh * V'stmt'^-1 ) ^-1 * ")"),
 
 
 })
 
-print(inspect(bitmap:match([[
-  ##
-   _
-  #
-
-]])));
 
 print(inspect(g:match([[
-getmap x:
-#_#
-###
 
-> : {
-  map :
-        #_#
-        ###
-  right
+print(###,_)
+
+lives:
+#
+#
+#
+#
+
+die:
+  lives << lives.tail()
+
+
+loop: {
+  next.draw(lives)
 }
-< : {
-  left
-}
+
+> : die
+
 ]])));

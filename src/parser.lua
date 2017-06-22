@@ -25,14 +25,15 @@ local commentLine = P"//"*((P(1)-nl)^1)*nl
 local commentBlock = P"/*" * ((P(1)-"*/")^1)*"*/"*wh
 local comment = commentLine + commentBlock
 
-local bit = S"#_" / function(str) return str=="#" and 1 or 0 end
+local bit = S"#-" / function(str) return str=="#" and 1 or 0 end
 local bitmap = Ct(Cc"bitmap" * Ct(Ct(sp * bit^1 * wh)^1))
 
 local g = P({
  "prog",
  prog = wh* Ct(V'stmt'^1),
- stmt = (comment + V'block' + V'call' + V'assign' + V'update' + bitmap + num + name)*wh,
+ stmt = (comment + V'block' + V'call' + V'assign' + V'update' +  V'list' + bitmap + num + name)*wh,
 
+ list = Ct(Cc"list" * P"[" * wh * V'stmt' * (P"," * wh * V'stmt')^0 * "]"),
  block = Ct(P"{"/"block" * wh * ((V'stmt')^0) * "}"),
  assign = Ct(Cc"assign" * ident * params^0 * ":" * wh * V'stmt'),
  update = Ct(Cc"update" * ident * wh*"<<" * wh * V'stmt'),
@@ -45,7 +46,46 @@ local g = P({
 
 print(inspect(g:match([[
 
-print(###,_)
+bricks : [
+##
+##
+,
+#
+#
+#
+#
+,
+-#
+##
+#-
+]
+
+brick
+brickPos
+
+newBrick : {
+  brick << next
+  next << new
+  brickPos << [3, 0]
+}
+
+
+}, {
+  {X},
+  {X},
+  {X},
+  {X},
+}, {
+  {_,X},
+  {X,X},
+  {X,_},
+},
+}
+
+
+
+
+print(###,-)
 
 lives:
 #
@@ -61,6 +101,19 @@ loop: {
   next.draw(lives)
 }
 
-> : die
+> : di-e
+
+
+  -###-
+  #---#
+  #---#
+  -####
+  ----#
+  #---#
+  -###-
+
+
+
+
 
 ]])));

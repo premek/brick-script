@@ -1,5 +1,5 @@
 local luaunit = require('test.luaunit')
-local parser = require('parser')
+local parser = require('funlang.parser')
 
 --- parser ---
 function testTetris() doTest('simple-tetris') end

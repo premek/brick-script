@@ -13,7 +13,7 @@ local sp = S" \t" ^0 + eof
 local wh = S" \t\r\n" ^0 + eof
 local nl = S"\r\n" ^1 + eof
 
-local symbols = S":{}()[]<,. \t\r\n"
+local symbols = S":{}()[],. \t\r\n"
 
 local id = C((P(1)-symbols)^1)*sp
 local name = Ct(Cc"name" * id *(wh*'.'*wh* id)^0 ) * sp
@@ -30,23 +30,52 @@ local bitmap = Ct(Cc"bitmap" * Ct(Ct(sp * bit^1 * wh)^1))
 local g = P({
  "prog",
  prog = wh* Ct(V'stmt'^0),
- stmt = (comment + V'block' + V'fn' + V'assign' + V'update' + V'call' + V'list' + bitmap + num + name)*wh,
+ stmt = (comment + V'block' + V'fn' + V'assign' + V'update' + V'list' + bitmap + num + V'call' + name)*wh,
 
  list = Ct(Cc"list" * P"[" * wh * V'stmt' * (P"," * wh * V'stmt')^0 * "]"),
  block = Ct(P"{"/"block" * wh * ((V'stmt')^0) * "}"),
  fn = Ct(Cc"fn" * fnParams * wh * V'stmt'),
  assign = Ct(Cc"assign" * name * ":" * wh * V'stmt'),
  update = Ct(Cc"update" * name * "<<" * wh * V'stmt'),
-
- call = Ct(Cc"call" * name * wh *"(" * wh * V'stmt'^-1 * ("," * wh * V'stmt'^-1 ) ^-1 * ")"),
-
+ args = V'stmt'^-1 * ("," * wh * V'stmt' ) ^0,
+ call = Ct(Cc"call" * name * wh *("(" * wh * V'args'* ")" + V'args')^-1  * V'block'^-1),
 
 })
 
 
 print(inspect(g:match([[
-seed: 3
-math.setSeed: (s) {seed<<s}
-math.random: {print(8)}
 
+bricks: [
+##
+##,
+####
+]
+
+brickPos: [3,0]
+brick: bricks(1)
+lastBrickMoved: -
+
+{
+  display.next.clear
+  display.next.draw next, [0,0]
+  display.main.draw(brick, brickPos, -)
+
+  brickPos << brickPos.v
+
+  // input
+  <{brickPos << brickPos.<}
+  >{brickPos << brickPos.>}
+  v{}
+  o{brick << brick.rotate}
+
+  col: collision(display.main, brick, brickPos)
+  col.#{ tr }
+  col.-{fa}
+  display.main.draw(brick, brickPos, #)
+  gameover
+  newBrick
+  lastBrickMoved << -
+
+  // TODO fun().moreFun()
+}
 ]])));

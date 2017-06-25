@@ -1,3 +1,5 @@
+[![status](https://travis-ci.org/premek/funlang.svg)](https://travis-ci.org/premek/funlang)
+
 # funlang
 
 ## Install

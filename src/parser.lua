@@ -1,6 +1,4 @@
 local lpeg = require "lpeg"
-local inspect = require 'inspect'
-
 
 lpeg.locale(lpeg)
 local S,C,Ct,Cc,Cg,Cb,Cf,Cmt,Cp,P,V =
@@ -42,40 +40,4 @@ local g = P({
 
 })
 
-
-print(inspect(g:match([[
-
-bricks: [
-##
-##,
-####
-]
-
-brickPos: [3,0]
-brick: bricks(1)
-lastBrickMoved: -
-
-{
-  display.next.clear
-  display.next.draw next, [0,0]
-  display.main.draw(brick, brickPos, -)
-
-  brickPos << brickPos.v
-
-  // input
-  <{brickPos << brickPos.<}
-  >{brickPos << brickPos.>}
-  v{}
-  o{brick << brick.rotate}
-
-  col: collision(display.main, brick, brickPos)
-  col.#{ tr }
-  col.-{fa}
-  display.main.draw(brick, brickPos, #)
-  gameover
-  newBrick
-  lastBrickMoved << -
-
-  // TODO fun().moreFun()
-}
-]])));
+return g;

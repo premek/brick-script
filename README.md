@@ -2,6 +2,10 @@
 
 ## Install
 ```
-luarocks install inspect
-luarocks install lpeg
+$ luarocks install lpeg
+```
+
+## Test
+```
+$ lua test/test.lua
 ```

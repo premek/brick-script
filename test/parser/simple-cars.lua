@@ -13,7 +13,7 @@ pos: [3, 16]
   col: collision(display.main, car, pos)
   col.#{ gameover }
   time.every(2){ display.main.v }
-  score.inc()
+  score.inc
   display.main.draw(car, pos, #)
 }
 

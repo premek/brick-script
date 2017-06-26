@@ -15,7 +15,7 @@ brick: bricks(1)
 lastBrickMoved: -
 
 {
-  display.next.clear()
+  display.next.clear
   display.next.draw(next, [0,0])
   display.main.draw(brick, brickPos, -)
 
@@ -31,8 +31,8 @@ lastBrickMoved: -
   col.#{ tr }
   col.-{fa}
   display.main.draw(brick, brickPos, #)
-  gameover()
-  newBrick()
+  gameover
+  newBrick
   lastBrickMoved << -
 
   // TODO fun().moreFun()

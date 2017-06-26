@@ -14,7 +14,7 @@ local nl = S"\r\n" ^1 + eof
 local symbols = S":{}()[],. \t\r\n"
 
 local id = C((P(1)-symbols)^1)*sp
-local name = Ct(Cc"name" * id *(wh*'.'*wh* id)^0 ) * sp
+local name = Ct(Cc"name" * id * (wh*"."*wh*id)^0) * sp
 local num = Ct(Cc"num" * C(lpeg.digit^1)) *sp -- do we really need you? :)
 local fnParams = Ct(Cc"params" * "(" * wh * (id * (P"," * wh * id)^0)^0 *wh* ")") *sp
 
@@ -36,7 +36,7 @@ local g = P({
  assign = Ct(Cc"assign" * name * ":" * wh * V'stmt'),
  update = Ct(Cc"update" * name * "<<" * wh * V'stmt'),
  args = V'stmt'^-1 * ("," * wh * V'stmt' ) ^0,
- call = Ct(Cc"call" * name * wh *("(" * wh * V'args'* ")" + V'args')^-1  * V'block'^-1),
+ call = Ct(Cc"call" * name * wh *("(" * wh * V'args'* ")")^-1  * V'block'^-1),
 
 })
 

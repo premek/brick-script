@@ -15,8 +15,8 @@ brick: bricks(1)
 lastBrickMoved: -
 
 {
-  display.next.clear
-  display.next.draw next, [0,0]
+  display.next.clear()
+  display.next.draw(next, [0,0])
   display.main.draw(brick, brickPos, -)
 
   brickPos << brickPos.v
@@ -31,8 +31,8 @@ lastBrickMoved: -
   col.#{ tr }
   col.-{fa}
   display.main.draw(brick, brickPos, #)
-  gameover
-  newBrick
+  gameover()
+  newBrick()
   lastBrickMoved << -
 
   // TODO fun().moreFun()
@@ -57,19 +57,19 @@ lastBrickMoved: -
     {"assign", {"name", "lastBrickMoved"}, {"bitmap", {{0}}}},
     {
         "block",
+        {"call", {"name", "display", "next", "clear"}},
         {
             "call",
-            {"name", "display", "next", "clear"},
-            {
-                "call",
-                {"name", "display", "next", "draw"},
-                {"call", {"name", "next"}, {"list", {"num", "0"}, {"num", "0"}}}
-            }
+            {"name", "display", "next", "draw"},
+            {"call", {"name", "next"}},
+            {"list", {"num", "0"}, {"num", "0"}}
         },
         {
             "call",
             {"name", "display", "main", "draw"},
-            {"call", {"name", "brick"}, {"call", {"name", "brickPos"}, {"bitmap", {{0}}}}}
+            {"call", {"name", "brick"}},
+            {"call", {"name", "brickPos"}},
+            {"bitmap", {{0}}}
         },
         {"update", {"name", "brickPos"}, {"call", {"name", "brickPos", "v"}}},
         {
@@ -100,11 +100,9 @@ lastBrickMoved: -
             {
                 "call",
                 {"name", "collision"},
-                {
-                    "call",
-                    {"name", "display", "main"},
-                    {"call", {"name", "brick"}, {"call", {"name", "brickPos"}}}
-                }
+                {"call", {"name", "display", "main"}},
+                {"call", {"name", "brick"}},
+                {"call", {"name", "brickPos"}}
             }
         },
         {"call", {"name", "col", "#"}, {"block", {"call", {"name", "tr"}}}},
@@ -112,17 +110,13 @@ lastBrickMoved: -
         {
             "call",
             {"name", "display", "main", "draw"},
-            {"call", {"name", "brick"}, {"call", {"name", "brickPos"}, {"bitmap", {{1}}}}}
+            {"call", {"name", "brick"}},
+            {"call", {"name", "brickPos"}},
+            {"bitmap", {{1}}}
         },
-        {
-            "call",
-            {"name", "gameover"},
-            {
-                "call",
-                {"name", "newBrick"},
-                {"update", {"name", "lastBrickMoved"}, {"bitmap", {{0}}}}
-            }
-        }
+        {"call", {"name", "gameover"}},
+        {"call", {"name", "newBrick"}},
+        {"update", {"name", "lastBrickMoved"}, {"bitmap", {{0}}}}
     }
 }
 

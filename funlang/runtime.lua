@@ -1,3 +1,5 @@
+return function()
+
 local runNode, runTree
 
 local vars = {}
@@ -28,6 +30,7 @@ local nodeRunners = {
     local calledType = type(called)
     print('call', varName, calledType, called)
     if calledType == 'number' then return called end
+    if calledType == 'function' then return called() end --TODO params
   end,
 }
 
@@ -46,7 +49,11 @@ runTree = function(tree, from)
 end
 
 return {
- run = function(tree)
+  run = function(tree)
     return runTree(tree, 1)
+  end,
+  assign = function(varName, value)
+    vars[varName] = value
   end
 }
+end

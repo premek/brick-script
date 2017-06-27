@@ -1,6 +1,6 @@
 local luaunit = require('test.luaunit')
 local parser = require('funlang.parser')
-local runtime = require('funlang.runtime')
+local Runtime = require('funlang.runtime')
 
 --- parser ---
 function test1() doTest('test1') end
@@ -8,16 +8,19 @@ function testTetris() doTest('simple-tetris') end
 function testCars() doTest('simple-cars') end
 
 --- runtime ---
-function testRT1() doRTTest('assign') end
+function testRTassign() doRTTest('assign') end
+function testRTbind() doRTTest('bind') end
 
 
 
 ---
 function doRTTest(name)
   local tests = require ('test.runtime.'..name)
-  print('\nRT Test:', name)
-  for subtest,test in pairs(tests) do
-    print('\nSubtest: ', subtest)
+  print('\n\n\nRT Test:', name)
+  for i, test in pairs(tests) do
+    print('\nSubtest: ', i)
+    local runtime = Runtime()
+    if test.configure then test.configure(runtime) end
     local tree = parser:match(test[1])
     print(luaunit.prettystr(tree))
     local result = runtime.run(tree)

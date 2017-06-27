@@ -21,9 +21,12 @@ function doRTTest(name)
     print('\nSubtest: ', i)
     local runtime = Runtime()
     if test.configure then test.configure(runtime) end
-    local tree = parser:match(test[1])
-    print(luaunit.prettystr(tree))
+    local code = test[1]
+    print('code:\n'..code)
+    local tree = parser:match(code)
+    print('parsed: ', luaunit.prettystr(tree))
     local result = runtime.run(tree)
+    print('result: ', result)
     luaunit.assertEquals(result, test[2])
   end
 end

@@ -23,5 +23,6 @@ function doTest(name)
     luaunit.assertEquals(result, test[2])
   end
 end
+-- FIXME tests and runtime logging
 
 os.exit( luaunit.LuaUnit.run() )

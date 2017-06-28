@@ -2,6 +2,7 @@ local luaunit = require('test.luaunit')
 local parser = require('funlang.parser')
 
 function testCall() doTest('call') end
+function testAssign() doTest('assign') end
 
 
 function doTest(name)

@@ -18,7 +18,21 @@ $ lua test/parser-complex.lua
 $ lua test/runtime.lua
 ```
 
-## Usage
+## Language (WIP)
+```
+bricks: [
+##
+##,
+####,
+-#
+##
+#-
+]
+brickPos: [3,0]
+brick: bricks(1)
+```
+
+## Integration
 
 ```lua
 local parser = require('funlang.parser')

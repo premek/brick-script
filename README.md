@@ -48,8 +48,8 @@ local script = [[
   increase(value)
 ]]
 local result = runtime.run(parser:match(script))
-print("result: ", result)
 print("i after execution: ", runtime.get('i'))
+print("result: ", result)
 ```
 
 ```

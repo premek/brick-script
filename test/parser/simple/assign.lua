@@ -18,7 +18,7 @@ hiscore : game.score
     {"assign", {"name", "score"}, {"num", "9"}},
     {"assign", {"name", "game", "speed"}, {"num", "19"}},
     {"assign", {"name", "fun"}, {"block"}},
-    {"assign", {"name", "pos"}, {"list", {"num", "2"}, {"num", "9"}}},
+    {"assign", {"name", "pos"}, {"list", {{"num", "2"}, {"num", "9"}}}},
     {"assign", {"name", "bitmap"}, {"bitmap", {{1, 1, 1}, {1, 0, 1}, {1, 1, 1}}}},
     {"assign", {"name", "hiscore"}, {"call", {"name", "game", "score"}, {}}}
 

@@ -18,13 +18,14 @@ pos: [3, 16]
 }
 
 ]],
+
 {
     {
         "assign",
         {"name", "car"},
         {"bitmap", {{0, 1, 0}, {1, 1, 1}, {0, 1, 0}, {1, 0, 1}}}
     },
-    {"assign", {"name", "pos"}, {"list", {"num", "3"}, {"num", "16"}}},
+    {"assign", {"name", "pos"}, {"list", {{"num", "3"}, {"num", "16"}}}},
     {
         "fn",
         {"params", "time"},

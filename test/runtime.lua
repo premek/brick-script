@@ -4,6 +4,7 @@ local Runtime = require('funlang.runtime')
 
 function testAssign() doTest('assign') end
 function testBind() doTest('bind') end
+function testList() doTest('list') end
 function testCall() doTest('call') end
 
 

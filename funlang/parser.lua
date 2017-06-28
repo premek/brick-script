@@ -30,13 +30,13 @@ local g = P({
  prog = wh* Ct(V'stmt'^0),
  stmt = (comment + V'block' + V'fn' + V'assign' + V'update' + V'list' + bitmap + num + V'call' + name)*wh,
 
- list = Ct(Cc"list" * P"[" * wh * V'stmt' * (P"," * wh * V'stmt')^0 * "]"),
+ list = Ct(Cc"list" * P"[" * wh * Ct((V'stmt' * (P"," * wh * V'stmt')^0 * (wh*','*wh)^-1)^-1) * "]"),
  block = Ct(P"{"/"block" * wh * ((V'stmt')^0) * "}"),
  fn = Ct(Cc"fn" * fnParams * wh * V'stmt'),
  assign = Ct(Cc"assign" * name * ":" * wh * V'stmt'),
  update = Ct(Cc"update" * name * "<<" * wh * V'stmt'),
  args = V'stmt'^-1 * ("," * wh * V'stmt' ) ^0,
- call = Ct(Cc"call" * name * wh *Ct(("(" * wh * V'args'* ")")^-1  * V'block'^-1)),
+ call = Ct(Cc"call" * name * wh *Ct(("(" * wh * V'args'* ")")^-1  * V'block'^-1)), -- TODO the block prameter needs arguments
 
 })
 

@@ -40,18 +40,21 @@ lastBrickMoved: -
 
 
 ]],
+
 {
     {
         "assign",
         {"name", "bricks"},
         {
             "list",
-            {"bitmap", {{1, 1}, {1, 1}}},
-            {"bitmap", {{1, 1, 1, 1}}},
-            {"bitmap", {{0, 1}, {1, 1}, {1, 0}}}
+            {
+                {"bitmap", {{1, 1}, {1, 1}}},
+                {"bitmap", {{1, 1, 1, 1}}},
+                {"bitmap", {{0, 1}, {1, 1}, {1, 0}}}
+            }
         }
     },
-    {"assign", {"name", "brickPos"}, {"list", {"num", "3"}, {"num", "0"}}},
+    {"assign", {"name", "brickPos"}, {"list", {{"num", "3"}, {"num", "0"}}}},
     {"assign", {"name", "brick"}, {"call", {"name", "bricks"}, {{"num", "1"}}}},
     {"assign", {"name", "lastBrickMoved"}, {"bitmap", {{0}}}},
     {
@@ -60,7 +63,7 @@ lastBrickMoved: -
         {
             "call",
             {"name", "display", "next", "draw"},
-            {{"call", {"name", "next"}, {}}, {"list", {"num", "0"}, {"num", "0"}}}
+            {{"call", {"name", "next"}, {}}, {"list", {{"num", "0"}, {"num", "0"}}}}
         },
         {
             "call",
@@ -132,5 +135,6 @@ lastBrickMoved: -
         {"update", {"name", "lastBrickMoved"}, {"bitmap", {{0}}}}
     }
 }
+
 
 }

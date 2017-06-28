@@ -6,27 +6,12 @@ local vars = {}
 
 
 
-local slice = function(tbl, first, last)
-  local sliced = {}
-  for i = first or 1, last or #tbl do
-    sliced[#sliced+1] = tbl[i]
-  end
-  return sliced
-end
-
-
-
 local name = function(n)
   if n[1]=='name' then return n[2] end
   -- TODO nested names
 end
 
 local nodeRunners = {
-
-  num = function(n)
-    print('num', n[2])
-    return tonumber(n[2])
-  end,
 
   assign = function(n)
     local varName = name(n[2])
@@ -35,21 +20,38 @@ local nodeRunners = {
     print ('assign', varName, vars[varName])
   end,
 
+  num = function(n)
+    print('num', n[2])
+    return tonumber(n[2])
+  end,
+
+  list = function(n)
+    local res = {}
+    for i,argument in ipairs(n[2]) do
+      res[i] = runNode(argument)
+    end
+    print('list', '#: ', #res)
+    return res
+  end,
+
   call = function(n)
     local varName = name(n[2])
     local arguments = {}
     for i,argument in ipairs(n[3]) do
       arguments[i] = runNode(argument)
     end
-
-
     local called = vars[varName]
     local calledType = type(called)
     print('call', varName, calledType, called)
-    if calledType == 'number' then return called end
     if calledType == 'function' then
-      return called(unpack(arguments))
-    end --TODO params
+        -- fn call
+        return called(unpack(arguments)) end
+    if calledType == 'table' and #arguments == 1 and type(arguments[1]=='number') then
+        -- list access
+        -- TODO 0 or 1 based indexing
+        -- TODO out of bounds
+        return called[arguments[1]+1] end
+    return called -- get variable value
   end,
 }
 

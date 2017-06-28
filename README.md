@@ -9,6 +9,11 @@ $ luarocks install lpeg
 
 ## Test
 ```
-$ lua test/test.lua
+$ ./runtests.sh
 ```
-
+or
+```
+$ lua test/parser-simple.lua
+$ lua test/parser-complex.lua
+$ lua test/runtime.lua
+```

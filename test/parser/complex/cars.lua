@@ -33,19 +33,21 @@ pos: [3, 16]
             {
                 "call",
                 {"name", "display", "main", "draw"},
-                {"call", {"name", "car"}},
-                {"call", {"name", "pos"}},
-                {"bitmap", {{0}}}
+                {
+                    {"call", {"name", "car"}, {}},
+                    {"call", {"name", "pos"}, {}},
+                    {"bitmap", {{0}}}
+                }
             },
             {
                 "call",
                 {"name", "<"},
-                {"block", {"update", {"name", "pos"}, {"call", {"name", "pos", "<"}}}}
+                {{"block", {"update", {"name", "pos"}, {"call", {"name", "pos", "<"}, {}}}}}
             },
             {
                 "call",
                 {"name", ">"},
-                {"block", {"update", {"name", "pos"}, {"call", {"name", "pos", ">"}}}}
+                {{"block", {"update", {"name", "pos"}, {"call", {"name", "pos", ">"}, {}}}}}
             },
             {
                 "assign",
@@ -53,28 +55,33 @@ pos: [3, 16]
                 {
                     "call",
                     {"name", "collision"},
-                    {"call", {"name", "display", "main"}},
-                    {"call", {"name", "car"}},
-                    {"call", {"name", "pos"}}
+                    {
+                        {"call", {"name", "display", "main"}, {}},
+                        {"call", {"name", "car"}, {}},
+                        {"call", {"name", "pos"}, {}}
+                    }
                 }
             },
-            {"call", {"name", "col", "#"}, {"block", {"call", {"name", "gameover"}}}},
+            {"call", {"name", "col", "#"}, {{"block", {"call", {"name", "gameover"}, {}}}}},
             {
                 "call",
                 {"name", "time", "every"},
-                {"num", "2"},
-                {"block", {"call", {"name", "display", "main", "v"}}}
+                {{"num", "2"}, {"block", {"call", {"name", "display", "main", "v"}, {}}}}
             },
-            {"call", {"name", "score", "inc"}},
+            {"call", {"name", "score", "inc"}, {}},
             {
                 "call",
                 {"name", "display", "main", "draw"},
-                {"call", {"name", "car"}},
-                {"call", {"name", "pos"}},
-                {"bitmap", {{1}}}
+                {
+                    {"call", {"name", "car"}, {}},
+                    {"call", {"name", "pos"}, {}},
+                    {"bitmap", {{1}}}
+                }
             }
         }
     }
 }
+
+
 
 }

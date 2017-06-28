@@ -36,7 +36,7 @@ local g = P({
  assign = Ct(Cc"assign" * name * ":" * wh * V'stmt'),
  update = Ct(Cc"update" * name * "<<" * wh * V'stmt'),
  args = V'stmt'^-1 * ("," * wh * V'stmt' ) ^0,
- call = Ct(Cc"call" * name * wh *("(" * wh * V'args'* ")")^-1  * V'block'^-1),
+ call = Ct(Cc"call" * name * wh *Ct(("(" * wh * V'args'* ")")^-1  * V'block'^-1)),
 
 })
 

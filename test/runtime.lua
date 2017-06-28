@@ -2,19 +2,12 @@ local luaunit = require('test.luaunit')
 local parser = require('funlang.parser')
 local Runtime = require('funlang.runtime')
 
---- parser ---
-function test1() doTest('test1') end
-function testTetris() doTest('simple-tetris') end
-function testCars() doTest('simple-cars') end
-
---- runtime ---
-function testRTassign() doRTTest('assign') end
-function testRTbind() doRTTest('bind') end
+function testAssign() doTest('assign') end
+function testBind() doTest('bind') end
+function testCall() doTest('call') end
 
 
-
----
-function doRTTest(name)
+function doTest(name)
   local tests = require ('test.runtime.'..name)
   print('\n\n\nRT Test:', name)
   for i, test in pairs(tests) do
@@ -29,12 +22,6 @@ function doRTTest(name)
     print('result: ', result)
     luaunit.assertEquals(result, test[2])
   end
-end
-
-function doTest(name)
-  local test = require ('test.parser.'..name)
-  local parsed = parser:match(test[1])
-  luaunit.assertEquals(parsed, test[2])
 end
 
 os.exit( luaunit.LuaUnit.run() )

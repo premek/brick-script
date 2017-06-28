@@ -5,6 +5,17 @@ local runNode, runTree
 local vars = {}
 
 
+
+local slice = function(tbl, first, last)
+  local sliced = {}
+  for i = first or 1, last or #tbl do
+    sliced[#sliced+1] = tbl[i]
+  end
+  return sliced
+end
+
+
+
 local name = function(n)
   if n[1]=='name' then return n[2] end
   -- TODO nested names
@@ -26,11 +37,19 @@ local nodeRunners = {
 
   call = function(n)
     local varName = name(n[2])
+    local arguments = {}
+    for i,argument in ipairs(n[3]) do
+      arguments[i] = runNode(argument)
+    end
+
+
     local called = vars[varName]
     local calledType = type(called)
     print('call', varName, calledType, called)
     if calledType == 'number' then return called end
-    if calledType == 'function' then return called() end --TODO params
+    if calledType == 'function' then
+      return called(unpack(arguments))
+    end --TODO params
   end,
 }
 

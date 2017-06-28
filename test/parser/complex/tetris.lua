@@ -40,7 +40,6 @@ lastBrickMoved: -
 
 
 ]],
-
 {
     {
         "assign",
@@ -53,46 +52,56 @@ lastBrickMoved: -
         }
     },
     {"assign", {"name", "brickPos"}, {"list", {"num", "3"}, {"num", "0"}}},
-    {"assign", {"name", "brick"}, {"call", {"name", "bricks"}, {"num", "1"}}},
+    {"assign", {"name", "brick"}, {"call", {"name", "bricks"}, {{"num", "1"}}}},
     {"assign", {"name", "lastBrickMoved"}, {"bitmap", {{0}}}},
     {
         "block",
-        {"call", {"name", "display", "next", "clear"}},
+        {"call", {"name", "display", "next", "clear"}, {}},
         {
             "call",
             {"name", "display", "next", "draw"},
-            {"call", {"name", "next"}},
-            {"list", {"num", "0"}, {"num", "0"}}
+            {{"call", {"name", "next"}, {}}, {"list", {"num", "0"}, {"num", "0"}}}
         },
         {
             "call",
             {"name", "display", "main", "draw"},
-            {"call", {"name", "brick"}},
-            {"call", {"name", "brickPos"}},
-            {"bitmap", {{0}}}
+            {
+                {"call", {"name", "brick"}, {}},
+                {"call", {"name", "brickPos"}, {}},
+                {"bitmap", {{0}}}
+            }
         },
-        {"update", {"name", "brickPos"}, {"call", {"name", "brickPos", "v"}}},
+        {"update", {"name", "brickPos"}, {"call", {"name", "brickPos", "v"}, {}}},
         {
             "call",
             {"name", "<"},
             {
-                "block",
-                {"update", {"name", "brickPos"}, {"call", {"name", "brickPos", "<"}}}
+                {
+                    "block",
+                    {"update", {"name", "brickPos"}, {"call", {"name", "brickPos", "<"}, {}}}
+                }
             }
         },
         {
             "call",
             {"name", ">"},
             {
-                "block",
-                {"update", {"name", "brickPos"}, {"call", {"name", "brickPos", ">"}}}
+                {
+                    "block",
+                    {"update", {"name", "brickPos"}, {"call", {"name", "brickPos", ">"}, {}}}
+                }
             }
         },
-        {"call", {"name", "v"}, {"block"}},
+        {"call", {"name", "v"}, {{"block"}}},
         {
             "call",
             {"name", "o"},
-            {"block", {"update", {"name", "brick"}, {"call", {"name", "brick", "rotate"}}}}
+            {
+                {
+                    "block",
+                    {"update", {"name", "brick"}, {"call", {"name", "brick", "rotate"}, {}}}
+                }
+            }
         },
         {
             "assign",
@@ -100,26 +109,28 @@ lastBrickMoved: -
             {
                 "call",
                 {"name", "collision"},
-                {"call", {"name", "display", "main"}},
-                {"call", {"name", "brick"}},
-                {"call", {"name", "brickPos"}}
+                {
+                    {"call", {"name", "display", "main"}, {}},
+                    {"call", {"name", "brick"}, {}},
+                    {"call", {"name", "brickPos"}, {}}
+                }
             }
         },
-        {"call", {"name", "col", "#"}, {"block", {"call", {"name", "tr"}}}},
-        {"call", {"name", "col", "-"}, {"block", {"call", {"name", "fa"}}}},
+        {"call", {"name", "col", "#"}, {{"block", {"call", {"name", "tr"}, {}}}}},
+        {"call", {"name", "col", "-"}, {{"block", {"call", {"name", "fa"}, {}}}}},
         {
             "call",
             {"name", "display", "main", "draw"},
-            {"call", {"name", "brick"}},
-            {"call", {"name", "brickPos"}},
-            {"bitmap", {{1}}}
+            {
+                {"call", {"name", "brick"}, {}},
+                {"call", {"name", "brickPos"}, {}},
+                {"bitmap", {{1}}}
+            }
         },
-        {"call", {"name", "gameover"}},
-        {"call", {"name", "newBrick"}},
+        {"call", {"name", "gameover"}, {}},
+        {"call", {"name", "newBrick"}, {}},
         {"update", {"name", "lastBrickMoved"}, {"bitmap", {{0}}}}
     }
 }
-
-
 
 }

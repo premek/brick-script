@@ -69,12 +69,21 @@ runTree = function(tree, from)
   end
 end
 
+
+-- public API
+
 return {
+  -- FIXME API to run string script directly without the need to call parser from client code
   run = function(tree)
     return runTree(tree, 1)
   end,
+
   assign = function(varName, value)
     vars[varName] = value
-  end
+  end,
+
+  get = function(varName)
+    return vars[varName]
+  end,
 }
 end

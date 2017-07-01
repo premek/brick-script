@@ -1,13 +1,15 @@
 [![status](https://travis-ci.org/premek/funlang.svg)](https://travis-ci.org/premek/funlang)
 
-# funlang
+# Brick Script
 
-## Install
+A scripting language for writing [Brick Game Machine](https://github.com/premek/brick) games
+
+## Install dependencies
 ```
 $ luarocks install lpeg
 ```
 
-## Test
+## Run tests
 ```
 $ ./runtests.sh
 ```

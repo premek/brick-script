@@ -1,8 +1,8 @@
-[![status](https://travis-ci.org/premek/funlang.svg)](https://travis-ci.org/premek/funlang)
-
 # Brick Script
 
 A scripting language for writing [Brick Game Machine](https://github.com/premek/brick) games
+
+[![status](https://travis-ci.org/premek/funlang.svg)](https://travis-ci.org/premek/funlang)
 
 ## Install dependencies
 ```

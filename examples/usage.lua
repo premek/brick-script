@@ -1,5 +1,5 @@
-local parser = require('funlang.parser')
-local Runtime = require('funlang.runtime')
+local parser = require('brickscript.parser')
+local Runtime = require('brickscript.runtime')
 
 local runtime = Runtime()
 runtime.assign('a', 3)

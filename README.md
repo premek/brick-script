@@ -2,7 +2,7 @@
 
 A scripting language for writing [Brick Game Machine](https://github.com/premek/brick) games
 
-[![status](https://travis-ci.org/premek/funlang.svg)](https://travis-ci.org/premek/funlang)
+[![status](https://travis-ci.org/premek/brickscript.svg)](https://travis-ci.org/premek/brickscript)
 
 ## Install dependencies
 ```
@@ -37,8 +37,8 @@ brick: bricks(1)
 ## Integration
 
 ```lua
-local parser = require('funlang.parser')
-local Runtime = require('funlang.runtime')
+local parser = require('brickscript.parser')
+local Runtime = require('brickscript.runtime')
 
 local runtime = Runtime()
 runtime.assign('a', 3)

@@ -1,6 +1,6 @@
 local luaunit = require('test.luaunit')
-local parser = require('funlang.parser')
-local Runtime = require('funlang.runtime')
+local parser = require('brickscript.parser')
+local Runtime = require('brickscript.runtime')
 
 function testAssign() doTest('assign') end
 function testBind() doTest('bind') end

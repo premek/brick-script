@@ -1,5 +1,5 @@
 local luaunit = require('test.luaunit')
-local parser = require('funlang.parser')
+local parser = require('brickscript.parser')
 
 
 function testTetris() doTest('tetris') end

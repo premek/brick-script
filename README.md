@@ -2,7 +2,7 @@
 
 A scripting language for writing [Brick Game Machine](https://github.com/premek/brick) games
 
-[![status](https://travis-ci.org/premek/brickscript.svg)](https://travis-ci.org/premek/brickscript)
+[![status](https://travis-ci.org/premek/brick-script.svg)](https://travis-ci.org/premek/brick-script)
 
 ## Install dependencies
 ```

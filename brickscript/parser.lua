@@ -13,8 +13,8 @@ local nl = S"\r\n" ^1 + eof
 
 local dig = lpeg.digit
 local symbols = S":{}()[],. \t\r\n"
-
-local id = C((1-dig-symbols-'#')*(P(1)-symbols)^0)*sp
+local idFirstNotAllowed = symbols+dig+S'#-'
+local id = C((1-idFirstNotAllowed)*(1-symbols)^0)*sp
 local name = Ct(Cc"name" * id)*sp
 local num = Ct(Cc"num" * C(dig^1)) *sp -- do we really need you? :)
 local fnParams = Ct(Cc"params" * "(" * wh * (id * (P"," * wh * id)^0)^0 *wh* ")") *sp
@@ -38,7 +38,7 @@ local g = P({
  assign = Ct(Cc"assign" * name * ":" * wh * V'stmt'),
  update = Ct(Cc"update" * name * "<<" * wh * V'stmt'),
  callArgs =  "(" * wh *( argSep^-1 * V'stmt' * (argSep * wh * V'stmt' )^0 * argSep^-1)^-1* ")"*wh,
- call  = Ct(Cc"call" *(((V'block'+V'list'+num+bitmap+name)*'.'*wh)+Ct(0)) * id * wh *Ct(V'callArgs'^-1 * V'block'^-1)), -- TODO the block prameter needs arguments
+ call  = Ct(Cc"call" *(((V'block'+V'list'+num+bitmap+name)*'.'*wh)+Ct(0)) * id * sp *Ct(V'callArgs'^-1 * V'block'^-1)), -- TODO the block prameter needs arguments
 
 })
 

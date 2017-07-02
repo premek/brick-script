@@ -2,11 +2,11 @@ return {[[
 #
 2
 a
-//a.x
+a.x
 //a.pos.x()
 2.next()
 2.next
-//shit().poop()
+
 {a.inc}.while{isSmall}
 
 println
@@ -27,7 +27,9 @@ getTable.getValue()
 game.over()
 
 2.plus(3)
-5.times{print(i)} // TODO block param i
+5.times{ // '{' cannot be on next line
+  print(i)
+} // TODO block param i
 
 [1,3,4].sum()
 
@@ -37,6 +39,7 @@ game.over()
     {"bitmap", {{1}}},
     {"num", "2"},
     {"call", {}, "a", {}},
+    {"call", {"name", "a"}, "x", {}},
     {"call", {"num", "2"}, "next", {}},
     {"call", {"num", "2"}, "next", {}},
     {

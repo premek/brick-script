@@ -10,6 +10,21 @@ bitmap:
 #-#
 ###
 
+bricks: [
+###
+###,
+#
+]
+
+bricks: [
+-#
+##
+#-
+,
+---
+]
+
+
 //hiscore : game.score
 
 ]],
@@ -20,6 +35,17 @@ bitmap:
     {"assign", {"name", "fun"}, {"block"}},
     {"assign", {"name", "pos"}, {"list", {{"num", "2"}, {"num", "9"}}}},
     {"assign", {"name", "bitmap"}, {"bitmap", {{1, 1, 1}, {1, 0, 1}, {1, 1, 1}}}},
+    {
+        "assign",
+        {"name", "bricks"},
+        {"list", {{"bitmap", {{1, 1, 1}, {1, 1, 1}}}, {"bitmap", {{1}}}}}
+    },
+    {
+        "assign",
+        {"name", "bricks"},
+        {"list", {{"bitmap", {{0, 1}, {1, 1}, {1, 0}}}, {"bitmap", {{0, 0, 0}}}}}
+    }
+
   --  {"assign", {"name", "hiscore"}, {"call", {"name", "game", "score"}, {}}}
 
 }

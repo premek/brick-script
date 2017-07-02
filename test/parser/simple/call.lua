@@ -1,24 +1,24 @@
 return {[[
-
+#
 2
 a
 //a.x
 //a.pos.x()
 2.next()
-//2.next
+2.next
 //shit().poop()
-{a.inc()}.while{isSmall()}
+{a.inc}.while{isSmall}
 
-println() // TODO arg less calls
+println
 println()
 println(1, 5)
 print(
-,line(),
-line()
-,line(),
+,line,
+line
+,line,
 )
-do{ something() }
-repeat(3){ something() }
+do{ something }
+repeat(3){ something }
 
 ###
 ###
@@ -34,8 +34,10 @@ game.over()
 
 ]],
 {
+    {"bitmap", {{1}}},
     {"num", "2"},
-    {"name", "a"},
+    {"call", {}, "a", {}},
+    {"call", {"num", "2"}, "next", {}},
     {"call", {"num", "2"}, "next", {}},
     {
         "call",
@@ -74,7 +76,7 @@ game.over()
         "call",
         {"num", "5"},
         "times",
-        {{"block", {"call", {}, "print", {{"name", "i"}}}}}
+        {{"block", {"call", {}, "print", {{"call", {}, "i", {}}}}}}
     },
     {"call", {"list", {{"num", "1"}, {"num", "3"}, {"num", "4"}}}, "sum", {}}
 

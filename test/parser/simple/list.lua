@@ -6,7 +6,7 @@ return {[[
 ##
 --, 3]
 
-[{block()}, fn(), fn(something()){withparams()}]
+[{block}, fn, fn(something){withparams}]
 
 [
 1,

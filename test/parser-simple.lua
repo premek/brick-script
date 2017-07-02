@@ -4,6 +4,7 @@ local parser = require('brickscript.parser')
 function testCall() doTest('call') end
 function testList() doTest('list') end
 function testAssign() doTest('assign') end
+function testUpdate() doTest('update') end
 
 
 function doTest(name)

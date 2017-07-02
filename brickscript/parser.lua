@@ -15,7 +15,6 @@ local dig = lpeg.digit
 local symbols = S":{}()[],. \t\r\n"
 local idFirstNotAllowed = symbols+dig+S'#-'
 local id = C((1-idFirstNotAllowed)*(1-symbols)^0)*sp
-local name = Ct(Cc"name" * id)*sp
 local num = Ct(Cc"num" * C(dig^1)) *sp -- do we really need you? :)
 local fnParams = Ct(Cc"params" * "(" * wh * (id * (P"," * wh * id)^0)^0 *wh* ")") *sp
 local argSep = P","*wh
@@ -35,7 +34,6 @@ local g = P({
  list = Ct(Cc"list" * P"[" * wh * argSep^-1 * Ct((V'stmt' * (P"," * wh * V'stmt')^0 * (wh*','*wh)^-1)^-1) * "]"),
  block = Ct(P"{"/"block" * wh * ((V'stmt')^0) * "}"),
  fn = Ct(Cc"fn" * fnParams * wh * V'stmt'), -- FIXME
- update = Ct(Cc"update" * name * "<<" * wh * V'stmt'),
 
  value = (V'call'+V'block'+V'list'+num+bitmap),
  callArgs =  Ct(("(" * wh *( argSep^-1 * V'stmt' * (argSep * wh * V'stmt' )^0 * argSep^-1)^-1* ")")^-1 * V'block'^-1 )*wh,-- TODO the block prameter needs arguments
@@ -45,6 +43,7 @@ local g = P({
 
  var = Ct(Cc'var' * (V'value' * '.')^0 * id),
  assign = Ct(Cc"assign" * V'var' * ":" * wh * V'stmt'),
+ update = Ct(Cc"update" * V'var' * "<<" * wh * V'stmt'),
 
 })
 

@@ -3,6 +3,7 @@ local parser = require('brickscript.parser')
 local Runtime = require('brickscript.runtime')
 
 function testAssign() doTest('assign') end
+function testUpdate() doTest('update') end
 function testBind() doTest('bind') end
 function testList() doTest('list') end
 function testCall() doTest('call') end

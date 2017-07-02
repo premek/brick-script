@@ -4,14 +4,6 @@ local runNode, runTree
 
 local global = {}
 
-
-
-local name = function(n)
-  if n[1]=='name' then return n[2] end
-  -- TODO nested names
-end
-
-
 local call = function(n, callOn)
   local varName = n[2]
   local arguments = {}
@@ -49,7 +41,8 @@ local var = function(n)
   end
 end
 
-local nodeRunners = {
+local nodeRunners
+nodeRunners = {
 
   assign = function(n)
     local callOn, varName = var(n[2])
@@ -57,6 +50,8 @@ local nodeRunners = {
     callOn[varName] = runNode(n[3])
     print ('assign', varName, callOn[varName])
   end,
+
+  update = function(n) nodeRunners.assign(n) end,
 
   num = function(n)
     print('num', n[2])

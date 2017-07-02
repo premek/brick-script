@@ -92,6 +92,16 @@ nodeRunners = {
     end
     return lastVal
   end,
+
+  block = function(n) -- TODO function with params
+    return function()
+      local lastVal = nil
+      for i=2, #n do
+        lastVal = runNode(n[i])
+      end
+      return lastVal
+    end
+  end,
 }
 
 runNode = function(n)

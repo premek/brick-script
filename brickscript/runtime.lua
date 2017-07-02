@@ -73,6 +73,14 @@ nodeRunners = {
     return res
   end,
 
+  bitmap = function(n)
+    local res = n[2]
+    res['h']=#res
+    res['w']=0
+    for i=1, #res do if #res[i]>res['w'] then res['w']=#res[i] end end
+    return res
+  end,
+
   get = function(n)
     local lastVal = global
     for i=2, #n do -- FIXME clean, duplicated code

@@ -15,9 +15,9 @@ brick: bricks(1)
 lastBrickMoved: -
 
 {
-  display.next.clear
-  display.next.draw(next, [0,0])
-  display.main.draw(brick, brickPos, -)
+  displayNext.clear
+  displayNext.draw(next, [0,0])
+  displayMain.draw(brick, brickPos, -)
 
   brickPos << brickPos.v
 
@@ -27,10 +27,10 @@ lastBrickMoved: -
   v{}
   o{brick << brick.rotate}
 
-  col: collision(display.main, brick, brickPos)
-  col.#{ tr }
-  col.-{fa}
-  display.main.draw(brick, brickPos, #)
+  col: collision(displayMain, brick, brickPos)
+  col.onTrue{ tr }
+  col.onFalse{fa}
+  displayMain.draw(brick, brickPos, #)
   gameover
   newBrick
   lastBrickMoved << -
@@ -38,9 +38,7 @@ lastBrickMoved: -
   // TODO fun().moreFun()
 }
 
-
 ]],
-
 {
     {
         "assign",
@@ -55,54 +53,55 @@ lastBrickMoved: -
         }
     },
     {"assign", {"name", "brickPos"}, {"list", {{"num", "3"}, {"num", "0"}}}},
-    {"assign", {"name", "brick"}, {"call", {"name", "bricks"}, {{"num", "1"}}}},
+    {"assign", {"name", "brick"}, {"call", {}, "bricks", {{"num", "1"}}}},
     {"assign", {"name", "lastBrickMoved"}, {"bitmap", {{0}}}},
     {
         "block",
-        {"call", {"name", "display", "next", "clear"}, {}},
+        {"call", {"name", "displayNext"}, "clear", {}},
         {
             "call",
-            {"name", "display", "next", "draw"},
-            {{"call", {"name", "next"}, {}}, {"list", {{"num", "0"}, {"num", "0"}}}}
+            {"name", "displayNext"},
+            "draw",
+            {{"call", {}, "next", {}}, {"list", {{"num", "0"}, {"num", "0"}}}}
         },
         {
             "call",
-            {"name", "display", "main", "draw"},
-            {
-                {"call", {"name", "brick"}, {}},
-                {"call", {"name", "brickPos"}, {}},
-                {"bitmap", {{0}}}
-            }
+            {"name", "displayMain"},
+            "draw",
+            {{"call", {}, "brick", {}}, {"call", {}, "brickPos", {}}, {"bitmap", {{0}}}}
         },
-        {"update", {"name", "brickPos"}, {"call", {"name", "brickPos", "v"}, {}}},
+        {"update", {"name", "brickPos"}, {"call", {"name", "brickPos"}, "v", {}}},
         {
             "call",
-            {"name", "<"},
+            {},
+            "<",
             {
                 {
                     "block",
-                    {"update", {"name", "brickPos"}, {"call", {"name", "brickPos", "<"}, {}}}
+                    {"update", {"name", "brickPos"}, {"call", {"name", "brickPos"}, "<", {}}}
                 }
             }
         },
         {
             "call",
-            {"name", ">"},
+            {},
+            ">",
             {
                 {
                     "block",
-                    {"update", {"name", "brickPos"}, {"call", {"name", "brickPos", ">"}, {}}}
+                    {"update", {"name", "brickPos"}, {"call", {"name", "brickPos"}, ">", {}}}
                 }
             }
         },
-        {"call", {"name", "v"}, {{"block"}}},
+        {"call", {}, "v", {{"block"}}},
         {
             "call",
-            {"name", "o"},
+            {},
+            "o",
             {
                 {
                     "block",
-                    {"update", {"name", "brick"}, {"call", {"name", "brick", "rotate"}, {}}}
+                    {"update", {"name", "brick"}, {"call", {"name", "brick"}, "rotate", {}}}
                 }
             }
         },
@@ -111,30 +110,29 @@ lastBrickMoved: -
             {"name", "col"},
             {
                 "call",
-                {"name", "collision"},
+                {},
+                "collision",
                 {
-                    {"call", {"name", "display", "main"}, {}},
-                    {"call", {"name", "brick"}, {}},
-                    {"call", {"name", "brickPos"}, {}}
+                    {"call", {}, "displayMain", {}},
+                    {"call", {}, "brick", {}},
+                    {"call", {}, "brickPos", {}}
                 }
             }
         },
-        {"call", {"name", "col", "#"}, {{"block", {"call", {"name", "tr"}, {}}}}},
-        {"call", {"name", "col", "-"}, {{"block", {"call", {"name", "fa"}, {}}}}},
+        {"call", {"name", "col"}, "onTrue", {{"block", {"call", {}, "tr", {}}}}},
+        {"call", {"name", "col"}, "onFalse", {{"block", {"call", {}, "fa", {}}}}},
         {
             "call",
-            {"name", "display", "main", "draw"},
-            {
-                {"call", {"name", "brick"}, {}},
-                {"call", {"name", "brickPos"}, {}},
-                {"bitmap", {{1}}}
-            }
+            {"name", "displayMain"},
+            "draw",
+            {{"call", {}, "brick", {}}, {"call", {}, "brickPos", {}}, {"bitmap", {{1}}}}
         },
-        {"call", {"name", "gameover"}, {}},
-        {"call", {"name", "newBrick"}, {}},
+        {"call", {}, "gameover", {}},
+        {"call", {}, "newBrick", {}},
         {"update", {"name", "lastBrickMoved"}, {"bitmap", {{0}}}}
     }
 }
+
 
 
 }

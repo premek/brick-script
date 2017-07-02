@@ -38,7 +38,7 @@ game.over()
 {
     {"bitmap", {{1}}},
     {"num", "2"},
-    {"call", {}, "a", {}},
+    {"call", {}, "a", {}}, -- do we want {} as global?
     {"call", {"name", "a"}, "x", {}},
     {"call", {"num", "2"}, "next", {}},
     {"call", {"num", "2"}, "next", {}},

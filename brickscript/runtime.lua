@@ -30,17 +30,29 @@ local nodeRunners = {
     for i,argument in ipairs(n[2]) do
       res[i] = runNode(argument)
     end
+    -- TODO list metatable???
+    if #res==2 then
+      res['x'] = function() return res[1] end
+      res['y'] = function() return res[2] end
+    end
     print('list', '#: ', #res)
     return res
   end,
 
   call = function(n)
-    local varName = name(n[2])
+    -- TODO call on something. metatables?
+    local callOn;
+    if #n[2]==0 then callOn = vars
+    elseif n[2][1] == 'name' then callOn = vars[n[2][2]]
+    else callOn = n[2]
+    end
+
+    local varName = n[3]
     local arguments = {}
-    for i,argument in ipairs(n[3]) do
+    for i,argument in ipairs(n[4]) do
       arguments[i] = runNode(argument)
     end
-    local called = vars[varName]
+    local called = callOn[varName]
     local calledType = type(called)
     print('call', varName, calledType, called)
     if calledType == 'function' then

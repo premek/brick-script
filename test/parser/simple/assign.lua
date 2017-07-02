@@ -2,7 +2,7 @@ return {[[
 score:0
 score:
   9
-//game.speed : 19
+//game.speed : 19 TODO
 fun : {}
 pos: [2,9]
 bitmap:

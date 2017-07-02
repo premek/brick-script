@@ -19,19 +19,22 @@ return {
 , 12 },
 
 
--- {[[
---   a:1
---   a.b: 2
---   a
--- ]]
--- , 1 },
---
--- {[[
---   a:1
---   a.b: 2
---   a.b
--- ]]
--- , 2 },
+{[[
+  a:[]
+  a.b: 2
+  a.b
+]]
+, 2 },
+
+
+{[[
+  player: []
+  player.head: []
+  player.head.width: 9
+  player.head.color: 1
+  player.head.width
+]]
+, 9 },
 
 
 }

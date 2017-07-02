@@ -21,31 +21,56 @@ return {[[
 []
 
 ]],
-
 {
-    {"list", {{"num", "2"}, {"num", "9"}}},
-    {"list", {{"num", "2"}}},
-    {"list", {{"bitmap", {{1}}}, {"bitmap", {{1, 1}, {0, 0}}}, {"num", "3"}}},
+    {"get", {"list", {{"get", {"num", "2"}}, {"get", {"num", "9"}}}}},
+    {"get", {"list", {{"get", {"num", "2"}}}}},
     {
-        "list",
+        "get",
         {
-            {"block", {"call", {}, "block", {}}},
-            {"call", {}, "fn", {}},
+            "list",
             {
-                "call",
-                {},
-                "fn",
+                {"get", {"bitmap", {{1}}}},
+                {"get", {"bitmap", {{1, 1}, {0, 0}}}},
+                {"get", {"num", "3"}}
+            }
+        }
+    },
+    {
+        "get",
+        {
+            "list",
+            {
+                {"get", {"block", {"get", {"call", "block", {}}}}},
+                {"get", {"call", "fn", {}}},
                 {
-                    {"call", {}, "something", {}},
-                    {"block", {"call", {}, "withparams", {}}}
+                    "get",
+                    {
+                        "call",
+                        "fn",
+                        {
+                            {"get", {"call", "something", {}}},
+                            {"block", {"get", {"call", "withparams", {}}}}
+                        }
+                    }
                 }
             }
         }
     },
-    {"list", {{"num", "1"}, {"num", "2"}, {"num", "3"}, {"num", "4"}}},
-    {"list", {{"num", "1"}}},
-    {"list", {{"num", "2"}}},
-    {"list", {}}
+    {
+        "get",
+        {
+            "list",
+            {
+                {"get", {"num", "1"}},
+                {"get", {"num", "2"}},
+                {"get", {"num", "3"}},
+                {"get", {"num", "4"}}
+            }
+        }
+    },
+    {"get", {"list", {{"get", {"num", "1"}}}}},
+    {"get", {"list", {{"get", {"num", "2"}}}}},
+    {"get", {"list", {}}}
 }
 
 }

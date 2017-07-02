@@ -3,7 +3,7 @@ return {[[
 2
 a
 a.x
-//a.pos.x()
+a.pos.x()
 2.next()
 2.next
 
@@ -35,56 +35,67 @@ game.over()
 
 
 ]],
-{
-    {"bitmap", {{1}}},
-    {"num", "2"},
-    {"call", {}, "a", {}}, -- do we want {} as global?
-    {"call", {"name", "a"}, "x", {}},
-    {"call", {"num", "2"}, "next", {}},
-    {"call", {"num", "2"}, "next", {}},
-    {
-        "call",
-        {"block", {"call", {"name", "a"}, "inc", {}}},
-        "while",
-        {{"block", {"call", {}, "isSmall", {}}}}
-    },
 
-    {"call", {}, "println", {}},
-    {"call", {}, "println", {}},
-    {"call", {}, "println", {{"num", "1"}, {"num", "5"}}},
+{
+    {"get", {"bitmap", {{1}}}},
+    {"get", {"num", "2"}},
+    {"get", {"call", "a", {}}},
+    {"get", {"call", "a", {}}, {"call", "x", {}}},
+    {"get", {"call", "a", {}}, {"call", "pos", {}}, {"call", "x", {}}},
+    {"get", {"num", "2"}, {"call", "next", {}}},
+    {"get", {"num", "2"}, {"call", "next", {}}},
     {
-        "call",
-        {},
-        "print",
+        "get",
+        {"block", {"get", {"call", "a", {}}, {"call", "inc", {}}}},
+        {"call", "while", {{"block", {"get", {"call", "isSmall", {}}}}}}
+    },
+    {"get", {"call", "println", {}}},
+    {"get", {"call", "println", {}}},
+    {"get", {"call", "println", {{"get", {"num", "1"}}, {"get", {"num", "5"}}}}},
+    {
+        "get",
         {
-            {"call", {}, "line", {}},
-            {"call", {}, "line", {}},
-            {"call", {}, "line", {}}
+            "call",
+            "print",
+            {
+                {"get", {"call", "line", {}}},
+                {"get", {"call", "line", {}}},
+                {"get", {"call", "line", {}}}
+            }
         }
     },
-    {"call", {}, "do", {{"block", {"call", {}, "something", {}}}}},
-    {"call", {}, "repeat", {{"num", "3"}, {"block", {"call", {}, "something", {}}}}},
-
+    {"get", {"call", "do", {{"block", {"get", {"call", "something", {}}}}}}},
     {
-        "call",
+        "get",
+        {
+            "call",
+            "repeat",
+            {{"get", {"num", "3"}}, {"block", {"get", {"call", "something", {}}}}}
+        }
+    },
+    {
+        "get",
         {"bitmap", {{1, 1, 1}, {1, 1, 1}}},
-        "shift",
-        {{"num", "1"}, {"num", "2"}}
+        {"call", "shift", {{"get", {"num", "1"}}, {"get", {"num", "2"}}}}
     },
-    {"call", {"name", "getTable"}, "getValue", {}},
-    {"call", {"name", "game"}, "over", {}},
-
-    {"call", {"num", "2"}, "plus", {{"num", "3"}}},
+    {"get", {"call", "getTable", {}}, {"call", "getValue", {}}},
+    {"get", {"call", "game", {}}, {"call", "over", {}}},
+    {"get", {"num", "2"}, {"call", "plus", {{"get", {"num", "3"}}}}},
     {
-        "call",
+        "get",
         {"num", "5"},
-        "times",
-        {{"block", {"call", {}, "print", {{"call", {}, "i", {}}}}}}
+        {
+            "call",
+            "times",
+            {{"block", {"get", {"call", "print", {{"get", {"call", "i", {}}}}}}}}
+        }
     },
-    {"call", {"list", {{"num", "1"}, {"num", "3"}, {"num", "4"}}}, "sum", {}}
-
-
-
+    {
+        "get",
+        {"list", {{"get", {"num", "1"}}, {"get", {"num", "3"}}, {"get", {"num", "4"}}}},
+        {"call", "sum", {}}
+    }
 }
+
 
 }

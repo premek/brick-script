@@ -30,15 +30,21 @@ local bitmap = Ct(Cc"bitmap" * Ct(Ct(sp * bit^1 * wh)^1))
 local g = P({
  "prog",
  prog = wh* Ct(V'stmt'^0),
- stmt = (comment + V'fn' + V'assign' + V'update'  + V'call' + V'block' + V'list'+  num+ bitmap+name)*wh,
+ stmt = (comment + V'fn' + V'assign' + V'update'  + V'get')*wh,
 
  list = Ct(Cc"list" * P"[" * wh * argSep^-1 * Ct((V'stmt' * (P"," * wh * V'stmt')^0 * (wh*','*wh)^-1)^-1) * "]"),
  block = Ct(P"{"/"block" * wh * ((V'stmt')^0) * "}"),
  fn = Ct(Cc"fn" * fnParams * wh * V'stmt'), -- FIXME
- assign = Ct(Cc"assign" * name * ":" * wh * V'stmt'),
  update = Ct(Cc"update" * name * "<<" * wh * V'stmt'),
- callArgs =  "(" * wh *( argSep^-1 * V'stmt' * (argSep * wh * V'stmt' )^0 * argSep^-1)^-1* ")"*wh,
- call  = Ct(Cc"call" *(((V'block'+V'list'+num+bitmap+name)*'.'*wh)+Ct(0)) * id * sp *Ct(V'callArgs'^-1 * V'block'^-1)), -- TODO the block prameter needs arguments
+
+ value = (V'call'+V'block'+V'list'+num+bitmap),
+ callArgs =  Ct(("(" * wh *( argSep^-1 * V'stmt' * (argSep * wh * V'stmt' )^0 * argSep^-1)^-1* ")")^-1 * V'block'^-1 )*wh,-- TODO the block prameter needs arguments
+ get = Ct(Cc'get' * V'value' * V'callOnValue'),
+ call  = Ct(Cc'call'*id * V'callArgs'),
+ callOnValue  = ('.' * V'call' * V'callOnValue')^-1,
+
+ var = Ct(Cc'var' * (V'value' * '.')^0 * id),
+ assign = Ct(Cc"assign" * V'var' * ":" * wh * V'stmt'),
 
 })
 

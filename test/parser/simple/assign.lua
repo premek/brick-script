@@ -2,7 +2,8 @@ return {[[
 score:0
 score:
   9
-//game.speed : 19 TODO
+game.speed : 19
+a.b.c: 2
 fun : {}
 pos: [2,9]
 bitmap:
@@ -25,29 +26,60 @@ bricks: [
 ]
 
 
-//hiscore : game.score
+hiscore : game.score
 
 ]],
 {
-    {"assign", {"name", "score"}, {"num", "0"}},
-    {"assign", {"name", "score"}, {"num", "9"}},
-  --  {"assign", {"name", "game", "speed"}, {"num", "19"}},
-    {"assign", {"name", "fun"}, {"block"}},
-    {"assign", {"name", "pos"}, {"list", {{"num", "2"}, {"num", "9"}}}},
-    {"assign", {"name", "bitmap"}, {"bitmap", {{1, 1, 1}, {1, 0, 1}, {1, 1, 1}}}},
+    {"assign", {"var", "score"}, {"get", {"num", "0"}}},
+    {"assign", {"var", "score"}, {"get", {"num", "9"}}},
+    {"assign", {"var", {"call", "game", {}}, "speed"}, {"get", {"num", "19"}}},
     {
         "assign",
-        {"name", "bricks"},
-        {"list", {{"bitmap", {{1, 1, 1}, {1, 1, 1}}}, {"bitmap", {{1}}}}}
+        {"var", {"call", "a", {}}, {"call", "b", {}}, "c"},
+        {"get", {"num", "2"}}
+    },
+    {"assign", {"var", "fun"}, {"get", {"block"}}},
+    {
+        "assign",
+        {"var", "pos"},
+        {"get", {"list", {{"get", {"num", "2"}}, {"get", {"num", "9"}}}}}
     },
     {
         "assign",
-        {"name", "bricks"},
-        {"list", {{"bitmap", {{0, 1}, {1, 1}, {1, 0}}}, {"bitmap", {{0, 0, 0}}}}}
+        {"var", "bitmap"},
+        {"get", {"bitmap", {{1, 1, 1}, {1, 0, 1}, {1, 1, 1}}}}
+    },
+    {
+        "assign",
+        {"var", "bricks"},
+        {
+            "get",
+            {
+                "list",
+                {{"get", {"bitmap", {{1, 1, 1}, {1, 1, 1}}}}, {"get", {"bitmap", {{1}}}}}
+            }
+        }
+    },
+    {
+        "assign",
+        {"var", "bricks"},
+        {
+            "get",
+            {
+                "list",
+                {
+                    {"get", {"bitmap", {{0, 1}, {1, 1}, {1, 0}}}},
+                    {"get", {"bitmap", {{0, 0, 0}}}}
+                }
+            }
+        }
+    },
+    {
+        "assign",
+        {"var", "hiscore"},
+        {"get", {"call", "game", {}}, {"call", "score", {}}}
     }
-
-  --  {"assign", {"name", "hiscore"}, {"call", {"name", "game", "score"}, {}}}
-
 }
+
 
 }

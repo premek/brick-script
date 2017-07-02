@@ -2,7 +2,7 @@ return function()
 
 local runNode, runTree
 
-local vars = {}
+local global = {}
 
 
 
@@ -11,13 +11,51 @@ local name = function(n)
   -- TODO nested names
 end
 
+
+local call = function(n, callOn)
+  local varName = n[2]
+  local arguments = {}
+  for i,argument in ipairs(n[3]) do
+    arguments[i] = runNode(argument)
+  end
+  local called = callOn[varName]
+  local calledType = type(called)
+  print('call', varName, calledType, called)
+  if calledType == 'function' then
+      -- fn call
+      return called(unpack(arguments)) end
+  if calledType == 'table' and #arguments == 1 and type(arguments[1]=='number') then
+      -- list access
+      -- TODO 0 or 1 based indexing
+      -- TODO out of bounds
+      return called[arguments[1]+1] end
+  return called -- get variable value
+end
+
+
+
+local var = function(n)
+  local callOn = global
+  local varName = n[#n]
+  if n[1]=='var' then
+    for i=2, #n-1 do
+      if(n[i][1]=='call') then
+        callOn = call(n[i], callOn)
+      else
+        callOn = runNode(n[i])
+      end
+    end
+    return callOn, varName
+  end
+end
+
 local nodeRunners = {
 
   assign = function(n)
-    local varName = name(n[2])
+    local callOn, varName = var(n[2])
     print ('assign', varName)
-    vars[varName] = runNode(n[3])
-    print ('assign', varName, vars[varName])
+    callOn[varName] = runNode(n[3])
+    print ('assign', varName, callOn[varName])
   end,
 
   num = function(n)
@@ -31,6 +69,7 @@ local nodeRunners = {
       res[i] = runNode(argument)
     end
     -- TODO list metatable???
+    res['size'] = function() return #res end
     if #res==2 then
       res['x'] = function() return res[1] end
       res['y'] = function() return res[2] end
@@ -39,31 +78,16 @@ local nodeRunners = {
     return res
   end,
 
-  call = function(n)
-    -- TODO call on something. metatables?
-    local callOn;
-    if #n[2]==0 then callOn = vars
-    elseif n[2][1] == 'name' then callOn = vars[n[2][2]]
-    else callOn = n[2]
+  get = function(n)
+    local lastVal = global
+    for i=2, #n do -- FIXME clean, duplicated code
+      if(n[i][1]=='call') then
+        lastVal = call(n[i], lastVal)
+      else
+        lastVal = runNode(n[i])
+      end
     end
-
-    local varName = n[3]
-    local arguments = {}
-    for i,argument in ipairs(n[4]) do
-      arguments[i] = runNode(argument)
-    end
-    local called = callOn[varName]
-    local calledType = type(called)
-    print('call', varName, calledType, called)
-    if calledType == 'function' then
-        -- fn call
-        return called(unpack(arguments)) end
-    if calledType == 'table' and #arguments == 1 and type(arguments[1]=='number') then
-        -- list access
-        -- TODO 0 or 1 based indexing
-        -- TODO out of bounds
-        return called[arguments[1]+1] end
-    return called -- get variable value
+    return lastVal
   end,
 }
 
@@ -91,11 +115,11 @@ return {
   end,
 
   assign = function(varName, value)
-    vars[varName] = value
+    global[varName] = value
   end,
 
   get = function(varName)
-    return vars[varName]
+    return global[varName]
   end,
 }
 end

@@ -108,6 +108,7 @@ nodeRunners = {
     local paramNamesByOrder = n[2]
     local blockBody = n[3]
     return function(...)
+      local arg={...}
       print('run block', #arg, 'scope', localScope, 'params', arg[1], arg[2])
       for paramOrder, paramValue in ipairs(arg) do
         localScope[paramNamesByOrder[paramOrder]] = paramValue

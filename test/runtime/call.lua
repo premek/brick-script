@@ -174,5 +174,43 @@ m.gameover
 },
 
 
+{
+configure=conf,
+
+[[
+  a:0
+  repeat(3, {i ->
+    a << a.plus(i)
+  })
+  a
+]]
+,
+6
+},
+
+
+{
+configure=conf,
+
+[[
+  add: {a,b -> a.plus(b)}
+  add(3, 2)
+]]
+,
+5
+},
+
+{
+configure=conf,
+[[
+  p: 99
+  add: {a,p -> a.plus(p)}
+  add(3, 2)
+]]
+,
+5
+},
+
+
 
 }

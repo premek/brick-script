@@ -158,6 +158,21 @@ configure=conf,
 6
 },
 
+{
+configure=conf,
+
+[[
+m:[]
+fun: { machine ->
+  machine.gameover << 1
+}
+fun(m)
+m.gameover
+]]
+,
+1
+},
+
 
 
 }

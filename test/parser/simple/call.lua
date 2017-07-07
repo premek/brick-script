@@ -27,9 +27,13 @@ getTable.getValue()
 game.over()
 
 2.plus(3)
-5.times{ // '{' cannot be on next line
+5.times{i ->
   print(i)
-} // TODO block param i
+}
+
+getFile().withWriter{writer -> writer.write(1)}
+
+list.sort{a,b -> a.awesomeness.minus(b.awesomeness)}
 
 [1,3,4].sum()
 
@@ -46,8 +50,8 @@ game.over()
     {"get", {"num", "2"}, {"call", "next", {}}},
     {
         "get",
-        {"block", {"get", {"call", "a", {}}, {"call", "inc", {}}}},
-        {"call", "while", {{"block", {"get", {"call", "isSmall", {}}}}}}
+        {"block", {},  {{"get", {"call", "a", {}}, {"call", "inc", {}}}}},
+        {"call", "while", {{"block", {}, {{"get", {"call", "isSmall", {}}}}}}}
     },
     {"get", {"call", "println", {}}},
     {"get", {"call", "println", {}}},
@@ -64,13 +68,13 @@ game.over()
             }
         }
     },
-    {"get", {"call", "do", {{"block", {"get", {"call", "something", {}}}}}}},
+    {"get", {"call", "do", {{"block", {}, {{"get", {"call", "something", {}}}}}}}},
     {
         "get",
         {
             "call",
             "repeat",
-            {{"get", {"num", "3"}}, {"block", {"get", {"call", "something", {}}}}}
+            {{"get", {"num", "3"}}, {"block", {}, {{"get", {"call", "something", {}}}}}}
         }
     },
     {
@@ -87,7 +91,48 @@ game.over()
         {
             "call",
             "times",
-            {{"block", {"get", {"call", "print", {{"get", {"call", "i", {}}}}}}}}
+            {
+                {
+                    "block",
+                    {"i"},
+                    {{"get", {"call", "print", {{"get", {"call", "i", {}}}}}}}
+                }
+            }
+        }
+    },
+    {
+        "get",
+        {"call", "getFile", {}},
+        {
+            "call",
+            "withWriter",
+            {
+                {
+                    "block",
+                    {"writer"},
+                    {{"get", {"call", "writer", {}}, {"call", "write", {{"get", {"num", "1"}}}}}}
+                }
+            }
+        }
+    },
+    {
+        "get",
+        {"call", "list", {}},
+        {
+            "call",
+            "sort",
+            {
+                {
+                    "block",
+                    {"a", "b"},
+                    {{
+                        "get",
+                        {"call", "a", {}},
+                        {"call", "awesomeness", {}},
+                        {"call", "minus", {{"get", {"call", "b", {}}, {"call", "awesomeness", {}}}}}
+                    }}
+                }
+            }
         }
     },
     {

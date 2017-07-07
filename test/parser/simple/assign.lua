@@ -38,7 +38,7 @@ hiscore : game.score
         {"var", {"call", "a", {}}, {"call", "b", {}}, "c"},
         {"get", {"num", "2"}}
     },
-    {"assign", {"var", "fun"}, {"get", {"block"}}},
+    {"assign", {"var", "fun"}, {"get", {"block", {},{}}}},
     {
         "assign",
         {"var", "pos"},

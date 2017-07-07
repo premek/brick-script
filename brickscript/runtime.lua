@@ -4,15 +4,27 @@ local runNode, runTree
 
 local global = {}
 
-local call = function(n, callOn)
+local call = function(n, callOn, scope)
   local varName = n[2]
   local arguments = {}
   for i,argument in ipairs(n[3]) do
-    arguments[i] = runNode(argument)
+    arguments[i] = runNode(argument, scope)
   end
-  local called = callOn[varName]
+  local called
+  -- TODO clean up
+  if type(callOn) == 'number' and varName =='plus' then called = function (num) print ("PLUS");return num+callOn end
+else
+  print('call', varName, 'on', scope)
+  called = callOn[varName]
+  print('call res', called)
+  while(not called and callOn['_parent']) do
+    callOn = callOn['_parent']
+    called = callOn[varName]
+    print('called on parent', callOn, called)
+  end
+end
   local calledType = type(called)
-  print('call', varName, calledType, called)
+  print('call', varName, #arguments, calledType, called, 'on', callOn)
   if calledType == 'function' then
       -- fn call
       return called(unpack(arguments)) end
@@ -26,39 +38,49 @@ end
 
 
 
-local var = function(n)
-  local callOn = global
+local var = function(n, scope, tryParents)
+  print('var')
+  local callOn = scope
   local varName = n[#n]
-  if n[1]=='var' then
-    for i=2, #n-1 do
-      if(n[i][1]=='call') then
-        callOn = call(n[i], callOn)
-      else
-        callOn = runNode(n[i])
-      end
+  for i=2, #n-1 do
+    if(n[i][1]=='call') then
+      callOn = call(n[i], callOn, scope)
+    else
+      callOn = runNode(n[i], callOn)
     end
-    return callOn, varName
   end
+  while tryParents and not callOn[varName] and callOn['_parent'] do
+    callOn = callOn['_parent']
+    print('parent', callOn)
+  end
+  return callOn, varName
 end
 
 local nodeRunners
 nodeRunners = {
 
-  assign = function(n)
-    local callOn, varName = var(n[2])
+  assign = function(n, scope)
+    local callOn, varName = var(n[2], scope, false)
     print ('assign', varName)
-    callOn[varName] = runNode(n[3])
+    callOn[varName] = runNode(n[3], scope)
     print ('assign', varName, callOn[varName])
+    return callOn[varName]
   end,
 
-  update = function(n) nodeRunners.assign(n) end,
+  update = function(n, scope)
+    local callOn, varName = var(n[2], scope, true)
+    print ('update', varName, callOn)
+    callOn[varName] = runNode(n[3], scope)
+    print ('update', varName, callOn[varName])
+    return callOn[varName]
+  end,
 
-  num = function(n)
+  num = function(n, scope)
     print('num', n[2])
     return tonumber(n[2])
   end,
 
-  list = function(n)
+  list = function(n, scope)
     local res = {}
     for i,argument in ipairs(n[2]) do
       res[i] = runNode(argument)
@@ -69,11 +91,11 @@ nodeRunners = {
       res['x'] = function() return res[1] end
       res['y'] = function() return res[2] end
     end
-    print('list', '#: ', #res)
+    print('list', '#: ', #res, res)
     return res
   end,
 
-  bitmap = function(n)
+  bitmap = function(n, scope)
     local res = n[2]
     res['h']=#res
     res['w']=0
@@ -81,30 +103,52 @@ nodeRunners = {
     return res
   end,
 
-  get = function(n)
-    local lastVal = global
+  block = function(n, scope)
+    local localScope = {_parent = scope} -- TODO parent scope / prototype
+    local paramNamesByOrder = n[2]
+    local blockBody = n[3]
+    return function(...)
+      print('run block', #arg, 'scope', localScope, 'params', arg[1], arg[2])
+      for paramOrder, paramValue in ipairs(arg) do
+        localScope[paramNamesByOrder[paramOrder]] = paramValue
+      end
+     return runTree(blockBody, 1, localScope)
+    end
+  end,
+
+  get = function(n, scope)
+    print('get')
+    local callOn = scope
+    local lastVal
     for i=2, #n do -- FIXME clean, duplicated code
       if(n[i][1]=='call') then
-        lastVal = call(n[i], lastVal)
+        lastVal = call(n[i], callOn, scope)
       else
-        lastVal = runNode(n[i])
+        lastVal = runNode(n[i], callOn)
       end
+      print('call res', lastVal)
+      callOn = lastVal
     end
+    print('get got', lastVal)
     return lastVal
   end,
 }
 
-runNode = function(n)
+runNode = function(n, scope)
   local type = n[1]
-  print('node', type)
-  return nodeRunners[type](n)
+  print('node', type, 'scope', scope)
+
+  return nodeRunners[type](n, scope)
 end
 
-runTree = function(tree, from)
+runTree = function(tree, from, scope)
+  print('runTree', 'scope', scope)
   local n = tree[from]
-  local firstResult = runNode(n)
+  local firstResult = runNode(n, scope)
   if #tree == from then return firstResult
-  else return runTree(tree, from+1)
+  else
+    print('-----')
+    return runTree(tree, from+1, scope)
   end
 end
 
@@ -114,7 +158,7 @@ end
 return {
   -- FIXME API to run string script directly without the need to call parser from client code
   run = function(tree)
-    return runTree(tree, 1)
+    return runTree(tree, 1, global)
   end,
 
   assign = function(varName, value)

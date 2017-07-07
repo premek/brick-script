@@ -40,7 +40,7 @@ return {[[
         {
             "list",
             {
-                {"get", {"block", {"get", {"call", "block", {}}}}},
+                {"get", {"block", {}, {{"get", {"call", "block", {}}}}}},
                 {"get", {"call", "fn", {}}},
                 {
                     "get",
@@ -49,7 +49,7 @@ return {[[
                         "fn",
                         {
                             {"get", {"call", "something", {}}},
-                            {"block", {"get", {"call", "withparams", {}}}}
+                            {"block", {}, {{"get", {"call", "withparams", {}}}}}
                         }
                     }
                 }

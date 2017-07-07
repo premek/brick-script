@@ -16,7 +16,8 @@ local symbols = S":{}()[],. \t\r\n"
 local idFirstNotAllowed = symbols+dig+S'#-'
 local id = C((1-idFirstNotAllowed)*(1-symbols)^0)*sp
 local num = Ct(Cc"num" * C(dig^1)) *sp -- do we really need you? :)
-local fnParams = Ct(Cc"params" * "(" * wh * (id * (P"," * wh * id)^0)^0 *wh* ")") *sp
+local fnParams = Ct(Cc"params" * "(" * wh * (id * (P"," * wh * id)^0)^0 *wh* ")") *sp -- not needed?
+local blockParams = wh * Ct((id * (wh * "," * wh * id)^0 *wh*'->')^0) *wh
 local argSep = P","*wh
 
 local commentLine = P"//"*((P(1)-nl)^1)*nl
@@ -32,8 +33,8 @@ local g = P({
  stmt = (comment + V'fn' + V'assign' + V'update'  + V'get')*wh,
 
  list = Ct(Cc"list" * P"[" * wh * argSep^-1 * Ct((V'stmt' * (P"," * wh * V'stmt')^0 * (wh*','*wh)^-1)^-1) * "]"),
- block = Ct(P"{"/"block" * wh * ((V'stmt')^0) * "}"),
- fn = Ct(Cc"fn" * fnParams * wh * V'stmt'), -- FIXME
+ block = Ct(P"{"/"block" * blockParams * Ct((V'stmt')^0) * "}"),
+ fn = Ct(Cc"fn" * fnParams * wh * V'stmt'), -- FIXME not needed? see block/lambda?
 
  value = (V'call'+V'block'+V'list'+num+bitmap),
  callArgs =  Ct(("(" * wh *( argSep^-1 * V'stmt' * (argSep * wh * V'stmt' )^0 * argSep^-1)^-1* ")")^-1 * V'block'^-1 )*wh,-- TODO the block prameter needs arguments

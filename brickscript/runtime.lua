@@ -83,11 +83,12 @@ nodeRunners = {
   list = function(n, scope)
     local res = {}
     for i,argument in ipairs(n[2]) do
-      res[i] = runNode(argument)
+      res[i] = runNode(argument, scope)
     end
     -- TODO list metatable???
     res['size'] = function() return #res end
-    if #res==2 then
+    res['isEmpty'] = function() return #res==0 end
+    if #res==2 and type(res[1]) == 'number' and type(res[2]) == 'number' then
       res['x'] = function() return res[1] end
       res['y'] = function() return res[2] end
     end

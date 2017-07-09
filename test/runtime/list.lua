@@ -60,4 +60,28 @@ return {
 },
 
 
+{
+[[
+  a: 3
+  b: 5
+  list: [1,a, b]
+  list(2)
+]]
+,
+ 5
+},
+
+
+{
+[[
+  tail: [2, [] ]
+  list: [1, tail]
+  t: list(1)
+  t(1).isEmpty
+]]
+,
+ true
+},
+
+
 }

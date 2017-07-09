@@ -19,6 +19,7 @@ line
 )
 do{ something }
 repeat(3){ something }
+repeat(3)  { something }
 
 ###
 ###
@@ -69,6 +70,14 @@ list.sort{a,b -> a.awesomeness.minus(b.awesomeness)}
         }
     },
     {"get", {"call", "do", {{"block", {}, {{"get", {"call", "something", {}}}}}}}},
+    {
+        "get",
+        {
+            "call",
+            "repeat",
+            {{"get", {"num", "3"}}, {"block", {}, {{"get", {"call", "something", {}}}}}}
+        }
+    },
     {
         "get",
         {

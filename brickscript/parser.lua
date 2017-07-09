@@ -37,7 +37,7 @@ local g = P({
  fn = Ct(Cc"fn" * fnParams * wh * V'stmt'), -- FIXME not needed? see block/lambda?
 
  value = (V'call'+V'block'+V'list'+num+bitmap),
- callArgs =  Ct(("(" * wh *( argSep^-1 * V'stmt' * (argSep * wh * V'stmt' )^0 * argSep^-1)^-1* ")")^-1 * V'block'^-1 )*wh,-- TODO the block prameter needs arguments
+ callArgs =  Ct(("(" * wh *( argSep^-1 * V'stmt' * (argSep * wh * V'stmt' )^0 * argSep^-1)^-1* ")")^-1 * sp * V'block'^-1 )*wh,
  get = Ct(Cc'get' * V'value' * V'callOnValue'),
  call  = Ct(Cc'call'*id * V'callArgs'),
  callOnValue  = ('.' * V'call' * V'callOnValue')^-1,

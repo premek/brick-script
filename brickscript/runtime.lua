@@ -12,7 +12,8 @@ local call = function(n, callOn, scope)
   end
   local called
   -- TODO clean up
-  if type(callOn) == 'number' and varName =='plus' then called = function (num) print ("PLUS");return num+callOn end
+  if type(callOn) == 'number' and varName =='plus' then called = function (num) print ("PLUS");return callOn+num end
+  elseif type(callOn) == 'number' and varName =='minus' then called = function (num) print ("MINUS");return callOn-num end
 else
   print('call', varName, 'on', scope)
   called = callOn[varName]

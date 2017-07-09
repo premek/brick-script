@@ -203,12 +203,57 @@ configure=conf,
 {
 configure=conf,
 [[
-  p: 99
-  add: {a,p -> a.plus(p)}
-  add(3, 2)
+  plusTwo: {n -> n.plus(2)}
+  plusFour: {n -> plusTwo(n.plus(2)) }
+  plusFour(6)
 ]]
 ,
-5
+10
+},
+
+{
+configure=conf,
+[[
+  val : 1
+  set10: {val << 10}
+  set10
+  val
+]]
+,
+10
+},
+
+{
+configure=conf,
+[[
+  val : 1
+  set: {n -> val << n}
+  set(4)
+  val
+]]
+,
+4
+},
+
+{
+configure=conf,
+[[
+  nop0: {}
+  nop1: {i -> }
+  nop2: {i,j -> }
+  nop0
+  nop0()
+  nop0(1)
+  nop1()
+  nop1(1)
+  nop1(1,2)
+  nop2()
+  nop2(1)
+  nop2(1,2)
+  nop2(1,2,3)
+]]
+,
+nil
 },
 
 

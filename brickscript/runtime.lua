@@ -113,7 +113,10 @@ nodeRunners = {
       local arg={...}
       print('run block', #arg, 'scope', localScope, 'params', arg[1], arg[2])
       for paramOrder, paramValue in ipairs(arg) do
-        localScope[paramNamesByOrder[paramOrder]] = paramValue
+        local paramName = paramNamesByOrder[paramOrder]
+        if paramName ~= nil then
+          localScope[paramName] = paramValue
+        end
       end
      return runTree(blockBody, 1, localScope)
     end
@@ -148,11 +151,14 @@ end
 runTree = function(tree, from, scope)
   print('runTree', 'scope', scope)
   local n = tree[from]
-  local firstResult = runNode(n, scope)
-  if #tree == from then return firstResult
-  else
-    print('-----')
-    return runTree(tree, from+1, scope)
+  -- TODO Void or Unit or Nothing ?
+  if n~=nil then
+    local firstResult = runNode(n, scope)
+    if #tree == from then return firstResult
+    else
+      print('-----')
+      return runTree(tree, from+1, scope)
+    end
   end
 end
 

@@ -14,16 +14,17 @@ local call = function(n, callOn, scope)
   -- TODO clean up
   if type(callOn) == 'number' and varName =='plus' then called = function (num) print ("PLUS");return callOn+num end
   elseif type(callOn) == 'number' and varName =='minus' then called = function (num) print ("MINUS");return callOn-num end
-else
-  print('call', varName, 'on', scope)
-  called = callOn[varName]
-  print('call res', called)
-  while(not called and callOn['_parent']) do
-    callOn = callOn['_parent']
+  elseif type(callOn) == 'number' and varName =='times' and type(arguments[1])=='function' then called = function (cb) for i=1,callOn do cb(i-1) end end
+  else
+    print('call', varName, 'on', scope)
     called = callOn[varName]
-    print('called on parent', callOn, called)
+    print('call res', called)
+    while(not called and callOn['_parent']) do
+      callOn = callOn['_parent']
+      called = callOn[varName]
+      print('called on parent', callOn, called)
+    end
   end
-end
   local calledType = type(called)
   print('call', varName, #arguments, calledType, called, 'on', callOn)
   if calledType == 'function' then
@@ -56,6 +57,13 @@ local var = function(n, scope, tryParents)
   end
   return callOn, varName
 end
+
+local defaultTaskHandlers = {
+  -- TODO logging framework
+  todo = function(msg) print("TODO", msg) end,
+  fixme = function(msg) print("FIXME", msg) end,
+  xxx = function(msg) print("XXX", msg) end,
+}
 
 local nodeRunners
 nodeRunners = {
@@ -138,6 +146,13 @@ nodeRunners = {
     print('get got', lastVal)
     return lastVal
   end,
+
+  task = function(n, scope)
+    print('task', n[2], n[3])
+    local handler = (global.task and global.task[n[2]]) or defaultTaskHandlers[n[2]]
+    handler(n[3])
+  end,
+
 
 }
 

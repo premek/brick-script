@@ -21,9 +21,9 @@ local blockParams = wh * Ct((id * (wh * "," * wh * id)^0 *wh*'->')^0) *wh
 local argSep = P","*wh
 
 local codeTaskType = (P"TODO" + P"FIXME" + P"XXX")/string.lower
-local codeTask = Ct(Cc"task" * codeTaskType * sp * C((P(1)-nl)^1))*nl
-local commentLine = P"//"*((P(1)-nl)^1)*nl
-local commentBlock = P"/*" * ((P(1)-"*/")^1)*"*/"*wh
+local codeTask = Ct(Cc"task" * codeTaskType * sp * C((P(1)-nl)^0))*nl
+local commentLine = P"//"*((P(1)-nl)^0)*nl
+local commentBlock = P"/*" * ((P(1)-"*/")^0)*"*/"*wh
 local comment = commentLine + commentBlock
 
 local bit = S"#-" / function(str) return str=="#" and 1 or 0 end

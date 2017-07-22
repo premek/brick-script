@@ -6,6 +6,8 @@ local runNode, runTree
 
 local global = {}
 
+local isVector = function (o) return type(o) == 'table' and #o==2 and type(o[1]) == 'number' and type(o[2]) == 'number' end
+
 local call = function(n, callOn, scope)
   local varName = n[2]
   local arguments = {}
@@ -20,6 +22,12 @@ local call = function(n, callOn, scope)
   elseif type(callOn) == 'table' and varName =='random' then called = function () return callOn[math.random(#callOn)] end
   elseif type(callOn) == 'table' and varName =='size' then called = function() return #callOn end
   elseif type(callOn) == 'table' and varName =='isEmpty' then called = function() return #callOn==0 end
+  elseif isVector(callOn) and varName =='x' then called = function() return callOn[1] end
+  elseif isVector(callOn) and varName =='y' then called = function() return callOn[2] end
+  elseif isVector(callOn) and varName =='<' then called = function(i) return {callOn[1]-(i or 1), callOn[2]} end
+  elseif isVector(callOn) and varName =='>' then called = function(i) return {callOn[1]+(i or 1), callOn[2]} end
+  elseif isVector(callOn) and varName =='^' then called = function(i) return {callOn[1], callOn[2]-(i or 1)} end
+  elseif isVector(callOn) and varName =='v' then called = function(i) return {callOn[1], callOn[2]+(i or 1)} end
 
   else
     print('call', varName, 'on', scope)
@@ -99,11 +107,6 @@ nodeRunners = {
     local res = {}
     for i,argument in ipairs(n[2]) do
       res[i] = runNode(argument, scope)
-    end
-
-    if #res==2 and type(res[1]) == 'number' and type(res[2]) == 'number' then
-      res['x'] = function() return res[1] end
-      res['y'] = function() return res[2] end
     end
     print('list', '#: ', #res, res)
     return res

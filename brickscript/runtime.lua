@@ -15,6 +15,7 @@ local call = function(n, callOn, scope)
   if type(callOn) == 'number' and varName =='plus' then called = function (num) print ("PLUS");return callOn+num end
   elseif type(callOn) == 'number' and varName =='minus' then called = function (num) print ("MINUS");return callOn-num end
   elseif type(callOn) == 'number' and varName =='times' and type(arguments[1])=='function' then called = function (cb) for i=1,callOn do cb(i-1) end end
+  elseif type(callOn) == 'table' and varName =='random' then called = function () return callOn[math.random(#callOn)] end
   else
     print('call', varName, 'on', scope)
     called = callOn[varName]

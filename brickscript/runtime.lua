@@ -16,6 +16,9 @@ local call = function(n, callOn, scope)
   elseif type(callOn) == 'number' and varName =='minus' then called = function (num) print ("MINUS");return callOn-num end
   elseif type(callOn) == 'number' and varName =='times' and type(arguments[1])=='function' then called = function (cb) for i=1,callOn do cb(i-1) end end
   elseif type(callOn) == 'table' and varName =='random' then called = function () return callOn[math.random(#callOn)] end
+  elseif type(callOn) == 'table' and varName =='size' then called = function() return #callOn end
+  elseif type(callOn) == 'table' and varName =='isEmpty' then called = function() return #callOn==0 end
+
   else
     print('call', varName, 'on', scope)
     called = callOn[varName]
@@ -95,9 +98,7 @@ nodeRunners = {
     for i,argument in ipairs(n[2]) do
       res[i] = runNode(argument, scope)
     end
-    -- TODO list metatable???
-    res['size'] = function() return #res end
-    res['isEmpty'] = function() return #res==0 end
+
     if #res==2 and type(res[1]) == 'number' and type(res[2]) == 'number' then
       res['x'] = function() return res[1] end
       res['y'] = function() return res[2] end

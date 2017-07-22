@@ -1,3 +1,5 @@
+math.randomseed(os.time())
+
 return function()
 
 local runNode, runTree

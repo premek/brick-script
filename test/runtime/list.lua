@@ -84,4 +84,14 @@ return {
 },
 
 
+{
+configure = function (runtime) math.randomseed(7) end,
+[[
+  list: [1, 2, 3]
+  [list.random, list.random, list.random, list.random, list.random]
+]]
+,
+{2, 3, 2, 1, 1}
+},
+
 }

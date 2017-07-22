@@ -20,6 +20,8 @@ local fnParams = Ct(Cc"params" * "(" * wh * (id * (P"," * wh * id)^0)^0 *wh* ")"
 local blockParams = wh * Ct((id * (wh * "," * wh * id)^0 *wh*'->')^0) *wh
 local argSep = P","*wh
 
+local codeTaskType = (P"TODO" + P"FIXME" + P"XXX")/string.lower
+local codeTask = Ct(Cc"task" * codeTaskType * sp * C((P(1)-nl)^1))*nl
 local commentLine = P"//"*((P(1)-nl)^1)*nl
 local commentBlock = P"/*" * ((P(1)-"*/")^1)*"*/"*wh
 local comment = commentLine + commentBlock
@@ -30,7 +32,7 @@ local bitmap = Ct(Cc"bitmap" * Ct(Ct(sp * bit^1 * wh)^1))
 local g = P({
  "prog",
  prog = wh* Ct(V'stmt'^0),
- stmt = (comment + V'fn' + V'assign' + V'update'  + V'get')*wh,
+ stmt = (comment + codeTask + V'fn' + V'assign' + V'update'  + V'get')*wh,
 
  list = Ct(Cc"list" * P"[" * wh * argSep^-1 * Ct((V'stmt' * (P"," * wh * V'stmt')^0 * (wh*','*wh)^-1)^-1) * "]"),
  block = Ct(P"{"/"block" * blockParams * Ct((V'stmt')^0) * "}"),

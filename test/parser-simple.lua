@@ -5,6 +5,7 @@ function testCall() doTest('call') end
 function testList() doTest('list') end
 function testAssign() doTest('assign') end
 function testUpdate() doTest('update') end
+function testComment() doTest('comment') end
 
 
 function doTest(name)

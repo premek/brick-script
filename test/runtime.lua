@@ -9,6 +9,7 @@ function testList() doTest('list') end
 function testCall() doTest('call') end
 function testBitmap() doTest('bitmap') end
 function testComment() doTest('comment') end
+function testNumber() doTest('number') end
 
 
 function doTest(name)

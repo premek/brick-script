@@ -16,9 +16,14 @@ local call = function(n, callOn, scope)
   end
   local called
   -- TODO clean up
-  if type(callOn) == 'number' and varName =='plus' then called = function (num) print ("PLUS");return callOn+num end
-  elseif type(callOn) == 'number' and varName =='minus' then called = function (num) print ("MINUS");return callOn-num end
+  if type(callOn) == 'number' and varName =='plus' then called = function (num) return callOn+num end
+  elseif type(callOn) == 'number' and varName =='minus' then called = function (num) return callOn-num end
   elseif type(callOn) == 'number' and varName =='times' and type(arguments[1])=='function' then called = function (cb) for i=1,callOn do cb(i-1) end end
+  elseif type(callOn) == 'number' and varName =='>' then called = function (other, cb) if callOn>other then return cb() end end
+  elseif type(callOn) == 'number' and varName =='<' then called = function (other, cb) if callOn<other then return cb() end end
+  elseif type(callOn) == 'number' and varName =='>=' then called = function (other, cb) if callOn>=other then return cb() end end
+  elseif type(callOn) == 'number' and varName =='<=' then called = function (other, cb) if callOn<=other then return cb() end end
+  elseif type(callOn) == 'number' and varName =='=' then called = function (other, cb) if callOn==other then return cb() end end
   elseif type(callOn) == 'table' and varName =='random' then called = function () return callOn[math.random(#callOn)] end
   elseif type(callOn) == 'table' and varName =='size' then called = function() return #callOn end
   elseif type(callOn) == 'table' and varName =='isEmpty' then called = function() return #callOn==0 end

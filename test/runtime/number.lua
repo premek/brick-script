@@ -19,6 +19,9 @@ return {
 {[[ 1.plus(2) ]], 3},
 {[[ 3.minus(2) ]], 1},
 
+{[[ 3.negate ]], -3},
+{[[ 3.negate.negate.negate.negate ]], 3},
+
 {[[
 n: 0
 3.times{n << n.plus(1)}
